@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./pages/LandingPage/LandingPage";
-import SignUp from "./pages/Auth/SignUp.jsx";
+import SignUp from "./pages/Auth/Signup.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import AllInvoices from "./pages/Invoices/AllInvoices.jsx";
