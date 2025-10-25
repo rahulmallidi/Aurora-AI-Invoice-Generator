@@ -6,15 +6,15 @@ import {
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./pages/LandingPage/LandingPage";
-import SignUp from "./pages/Auth/Signup.jsx";
-import Login from "./pages/Auth/Login.jsx";
-import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import AllInvoices from "./pages/Invoices/AllInvoices.jsx";
-import CreateInvoice from "./pages/Invoices/CreateInvoice.jsx";
-import InvoiceDetail from "./pages/Invoices/InvoiceDetail.jsx";
-import ProfilePage from "./pages/Profile/ProfilePage.jsx";
-import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
-import { AuthProvider } from "./context/AuthContext.jsx";
+import SignUp from "./pages/Auth/SignUp";
+import Login from "./pages/Auth/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import AllInvoices from "./pages/Invoices/AllInvoices ";
+import CreateInvoice from "./pages/Invoices/CreateInvoice";
+import InvoiceDetail from "./pages/Invoices/InvoiceDetail";
+import ProfilePage from "./pages/Profile/ProfilePage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 
 const App = () => {
