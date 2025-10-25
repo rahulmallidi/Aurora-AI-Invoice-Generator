@@ -9,7 +9,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUp from "./pages/auth/SignUp";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import AllInvoices from "./pages/Invoices/AllInvoices ";
+import AllInvoices from "./pages/Invoices/AllInvoices";
 import CreateInvoice from "./pages/Invoices/CreateInvoice";
 import InvoiceDetail from "./pages/Invoices/InvoiceDetail";
 import ProfilePage from "./pages/Profile/ProfilePage";
