@@ -11,7 +11,6 @@ const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
-
 const allowedOrigins = [
   "https://aurora-ai-invoice-generator-3.onrender.com", // your frontend Render URL
   "http://localhost:5173" // local dev (optional)
@@ -33,7 +32,7 @@ app.use(
   })
 );
 
-// Middleware
+
 app.use(express.json());
 
 // Connect to MongoDB
@@ -44,13 +43,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/ai", aiRoutes);
 
-
 if (process.env.NODE_ENV === "production") {
   const frontendDist = path.join(__dirname, "../frontend/invoice-generator/dist");
   app.use(express.static(frontendDist));
-
   
-  app.get("*", (req, res) => {
+ 
+  app.get("/*", (req, res) => {
     res.sendFile(path.join(frontendDist, "index.html"));
   });
 }
