@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const connectDB = require("./config/db");
 
 // Import routes
@@ -11,9 +10,10 @@ const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
+// ✅ Allow requests from your separate frontend
 const allowedOrigins = [
-  "https://aurora-ai-invoice-generator-3.onrender.com", // your frontend Render URL
-  "http://localhost:5173" // local dev (optional)
+  "https://aurora-ai-invoice-generator-3.onrender.com", // Your frontend URL
+  "http://localhost:5173" // Local development
 ];
 
 app.use(
@@ -43,15 +43,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/ai", aiRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  const frontendDist = path.join(__dirname, "../frontend/invoice-generator/dist");
-  app.use(express.static(frontendDist));
-  
-  // ✅ FIXED: Use wildcard middleware instead of route
-  app.use((req, res) => {
-    res.sendFile(path.join(frontendDist, "index.html"));
-  });
-}
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({ message: "Backend API is running!" });
+});
 
 // Start Server
 const PORT = process.env.PORT || 8000;
