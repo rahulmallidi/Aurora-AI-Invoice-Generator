@@ -32,7 +32,7 @@ app.use(
   })
 );
 
-
+// Middleware
 app.use(express.json());
 
 // Connect to MongoDB
@@ -47,8 +47,8 @@ if (process.env.NODE_ENV === "production") {
   const frontendDist = path.join(__dirname, "../frontend/invoice-generator/dist");
   app.use(express.static(frontendDist));
   
- 
-  app.get("/*", (req, res) => {
+  // ✅ FIXED: Use wildcard middleware instead of route
+  app.use((req, res) => {
     res.sendFile(path.join(frontendDist, "index.html"));
   });
 }
