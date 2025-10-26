@@ -10,23 +10,27 @@ const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
-// ✅ Allow requests from your separate frontend
+// ✅ UPDATED: Use your actual frontend URL
 const allowedOrigins = [
-  "https://aurora-ai-invoice-generator-3.onrender.com", // Your frontend URL
-  "http://localhost:5173" // Local development
+  "https://aurora-ai-invoice-generator-3.onrender.com", // ✅ Your frontend URL
+  "http://localhost:5173", // Local development
+  "http://localhost:5174"  // Alternative local port
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         console.log("❌ Blocked by CORS:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -45,7 +49,7 @@ app.use("/api/ai", aiRoutes);
 
 // Health check endpoint
 app.get("/", (req, res) => {
-  res.json({ message: "Backend API is running!" });
+  res.json({ message: "Backend API is running!", timestamp: new Date() });
 });
 
 // Start Server
