@@ -10,38 +10,34 @@ const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
-// Middleware to handle CORS
+// ✅ Simple and safe CORS setup
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000", // for local dev
-      "https://aurora-ai-invoice-generator.onrender.com", // your Render frontend URL (change this)
-    ],
+    origin: "*", // since frontend is served from same domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   })
 );
 
-// Connect Database
+// ✅ Connect to MongoDB
 connectDB();
 
-// Middleware
+// ✅ Middleware
 app.use(express.json());
 
-// Routes
+// ✅ API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/ai", aiRoutes);
 
-// ✅ Serve frontend (for production)
+// ✅ Serve frontend (dist inside backend folder)
 const __dirname1 = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/dist")));
+  app.use(express.static(path.join(__dirname1, "backend", "dist")));
 
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "dist", "index.html"))
+    res.sendFile(path.resolve(__dirname1, "backend", "dist", "index.html"))
   );
 } else {
   app.get("/", (req, res) => {
@@ -49,6 +45,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// Start Server
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
