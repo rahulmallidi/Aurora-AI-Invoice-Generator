@@ -1,50 +1,57 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const connectDB = require("./config/db");
 
+// Import routes
 const authRoutes = require("./routes/authRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
-// ✅ Simple and safe CORS setup
+// ✅ UPDATED: Use your actual frontend URL
+const allowedOrigins = [
+  "https://aurora-ai-invoice-generator-3.onrender.com", // ✅ Your frontend URL
+  "http://localhost:5173", // Local development
+  "http://localhost:5174"  // Alternative local port
+];
+
 app.use(
   cors({
-    origin: "*", // since frontend is served from same domain
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("❌ Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
-// ✅ Connect to MongoDB
-connectDB();
-
-// ✅ Middleware
+// Middleware
 app.use(express.json());
 
-// ✅ API routes
+// Connect to MongoDB
+connectDB();
+
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/ai", aiRoutes);
 
-// ✅ Serve frontend (dist inside backend folder)
-const __dirname1 = path.resolve();
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({ message: "Backend API is running!", timestamp: new Date() });
+});
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "backend", "dist")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "backend", "dist", "index.html"))
-  );
-} else {
-  app.get("/", (req, res) => {
-    res.send("API is running...");
-  });
-}
-
-// ✅ Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// Start Server
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
